@@ -2,3 +2,7 @@
 Here is the link to the consolidated data frame of journal articles:
 
 https://drive.google.com/drive/folders/1IGbAFE_GMsGWHdzrbN_ahZhgloXlzfdS?usp=sharing
+
+Link to merged metadata and text data:
+
+https://www.dropbox.com/s/byq387m5w3wdhhg/merged_data.csv?dl=0
