@@ -4,15 +4,14 @@ from gensim.models.doc2vec import Doc2Vec
 
 st.title("Article Search")
 st.header("NLT Project")
-st.subheader("By: Cynthia, Clay, Jobeth")
+st.subheader("By: Cynthia Chiang, Clay Carson, Jobeth Muncy")
 
 # Read in data
-df = pd.read_csv('NLT_data/merged_data.csv')
+df = pd.read_csv('articles_with_topics.csv')
 
 # Load in model
-model = Doc2Vec.load("doc2vec.model")
+model = Doc2Vec.load("doc2vec_updated.model", mmap='r')
 
-@st.cache
 # Function for searching most similar articles by similar keywords
 def most_sim_docs(word, n_articles=2, topn=3):
     dfs = []
@@ -43,16 +42,29 @@ def most_sim_docs(word, n_articles=2, topn=3):
 # User input
 user_input = st.text_input("Keyword:")
 
-# Sidebar search options
-sort_by = st.sidebar.selectbox("Order articles by:",
-                              ['None', 'Most Recent'])
-
+# SIDE BAR OPTIONS
 # Link to LDA visualization
 st.sidebar.markdown("[Topic Visualization](http://localhost:8888/view/projects/client_project/lda.html)")
 
+# Search options
+sort_by = st.sidebar.selectbox("Order articles by:",
+                              ['None', 'Most Recent'])
+
+# Search by topic
+topic = st.sidebar.selectbox("Search by topic:",
+                             ['', 'German', 'Cellular Expression', 'Heart and Lungs', 'Cell Studies', 
+                              'At Risk Groups', 'Household Pets', 'Pre-existing Conditions', 
+                              'Global Health', 'Hospital Studies', 'Respiratory Conditions', 
+                              'Severe Outbreaks', 'Nervous System', 'Research Studies', 
+                              'Symptoms and Treatment', 'Intestinal Reactions', 'Coronaviruses', 
+                              'French', 'Vaccines', 'Proteins', 'Tissues and Lesions', 'Italian', 
+                              'Detection', 'Spanish', 'Farm Animals', 'Host Infection'])
+
 # Display results as link to article and article title
-if user_input == '' or user_input not in model.wv.vocab.keys():
+if user_input == '':
     "Please input a keyword."
+elif user_input not in model.wv.vocab.keys():
+    "Keyword not found. Please enter a different word."
 else:
     articles = most_sim_docs(word = user_input)
 
@@ -62,7 +74,7 @@ order = sort_by
 if order == 'None' and user_input in model.wv.vocab.keys():
     for i in range(articles.shape[0]):
         st.markdown(f"[{articles.iloc[i]['title']}]({articles.iloc[i]['url']})")
-        st.markdown("[insert topics here]")
+        st.markdown(f"**Related topics**: {articles.iloc[i]['Keywords']}")
         st.markdown(f"{articles.iloc[i]['text_body'][:300]}...")
 
 elif order == 'Most Recent' and user_input in model.wv.vocab.keys():
@@ -71,5 +83,22 @@ elif order == 'Most Recent' and user_input in model.wv.vocab.keys():
     for i in range(articles.shape[0]):
         year_pub = articles.iloc[i]['publish_time'][:4]
         st.markdown(f"[{articles.iloc[i]['title']} ({year_pub})]({articles.iloc[i]['url']})")
-        st.markdown("[insert topics here]")
+        st.markdown(f"**Related topics**: {articles.iloc[i]['Keywords']}")
         st.markdown(f"{articles.iloc[i]['text_body'][:300]}...")
+
+# Display articles of a certain topic
+topic_selected = topic
+topic_list = ['German', 'Cellular Expression', 'Heart and Lungs', 'Cell Studies', 'At Risk Groups',
+              'Household Pets', 'Pre-existing Conditions', 'Global Health', 'Hospital Studies', 
+              'Respiratory Conditions','Severe Outbreaks', 'Nervous System', 'Research Studies', 
+              'Symptoms and Treatment', 'Intestinal Reactions', 'Coronaviruses', 'French', 'Vaccines',
+              'Proteins', 'Tissues and Lesions', 'Italian', 'Detection', 'Spanish', 'Farm Animals', 
+              'Host Infection']
+topic_dict = {topic: float(i) for i, topic in enumerate(topic_list)}
+
+if topic_selected in topic_list:
+    article_by_topic = df.loc[df['Dominant_Topic'] == topic_dict[topic_selected], :]
+    
+    for i in range(article_by_topic.shape[0]):
+        st.markdown(f"[{article_by_topic.iloc[i]['title']}]({article_by_topic.iloc[i]['url']})")
+        st.markdown(f"{article_by_topic.iloc[i]['text_body'][:300]}...")
