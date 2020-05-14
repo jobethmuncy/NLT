@@ -12,12 +12,12 @@ df = pd.read_csv('NLT_data/merged_data.csv')
 # Load in model
 model = Doc2Vec.load("doc2vec.model")
 
-# Function for searching most similar articles by similar keywords
 @st.cache
+# Function for searching most similar articles by similar keywords
 def most_sim_docs(word, n_articles=2, topn=3):
     dfs = []
     sims = []
-    
+
     # Input word with topn of its most similar keywords
     keywords = [word] + [w[0] for w in model.wv.most_similar_cosmul(word, topn=topn)]
     
@@ -42,20 +42,34 @@ def most_sim_docs(word, n_articles=2, topn=3):
 
 # User input
 user_input = st.text_input("Keyword:")
+
+# Sidebar search options
 sort_by = st.sidebar.selectbox("Order articles by:",
-                              ['None', 'Year Published', 'Alphabetically'])
+                              ['None', 'Most Recent'])
+
+# Link to LDA visualization
+st.sidebar.markdown("[Topic Visualization](http://localhost:8888/view/projects/client_project/lda.html)")
 
 # Display results as link to article and article title
-if user_input != None:
-    articles  = most_sim_docs(word = user_input)
+if user_input == '' or user_input not in model.wv.vocab.keys():
+    "Please input a keyword."
+else:
+    articles = most_sim_docs(word = user_input)
 
 # Display in certain order
 order = sort_by
-if order == 'Year Published':
+
+if order == 'None' and user_input in model.wv.vocab.keys():
+    for i in range(articles.shape[0]):
+        st.markdown(f"[{articles.iloc[i]['title']}]({articles.iloc[i]['url']})")
+        st.markdown("[insert topics here]")
+        st.markdown(f"{articles.iloc[i]['text_body'][:300]}...")
+
+elif order == 'Most Recent' and user_input in model.wv.vocab.keys():
     articles = articles.sort_values(by='publish_time', ascending=False)
     
-for i in range(articles.shape[0]):
-    st.markdown(f"[{articles.iloc[i]['title']}]({articles.iloc[i]['url']})")
-    st.markdown("[insert topics here]")
-    st.markdown(f"{articles.iloc[i]['text_body'][:300]}...")
-
+    for i in range(articles.shape[0]):
+        year_pub = articles.iloc[i]['publish_time'][:4]
+        st.markdown(f"[{articles.iloc[i]['title']} ({year_pub})]({articles.iloc[i]['url']})")
+        st.markdown("[insert topics here]")
+        st.markdown(f"{articles.iloc[i]['text_body'][:300]}...")
