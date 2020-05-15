@@ -1,0 +1,20 @@
+
+Link to the consolidated data frame of journal articles:
+
+https://drive.google.com/drive/folders/1IGbAFE_GMsGWHdzrbN_ahZhgloXlzfdS?usp=sharing
+
+Link to merged metadata and text data:
+
+https://www.dropbox.com/s/byq387m5w3wdhhg/merged_data.csv?dl=0
+
+Link to csv file of text data merged with filtered coronavirus articles:
+
+https://www.dropbox.com/s/k0hh0jjjb7e0d2w/merged_filtered_articles.csv?dl=0
+
+Link to LDA model (ran on merged metadata, 5 times), optimal_mallet model, and topics csv file:
+
+https://drive.google.com/open?id=1LKKWQkD8L-kuM3pIun3o_mX7kJ2KQ9GW
+
+Link to csv file of articles with topics added and retrained doc2vec model:
+
+https://drive.google.com/open?id=1_zaCCqI1gjZMrujrXS11LqhYD7HIa1pl

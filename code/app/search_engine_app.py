@@ -44,7 +44,7 @@ user_input = st.text_input("Keyword:")
 
 # SIDE BAR OPTIONS
 # Link to LDA visualization
-st.sidebar.markdown("[Topic Visualization](http://localhost:8888/view/projects/client_project/lda.html)")
+st.sidebar.markdown("[Topic Visualization](http://localhost:8888/view/projects/client_project/use_lda.html)")
 
 # Search options
 sort_by = st.sidebar.selectbox("Order articles by:",
@@ -52,13 +52,13 @@ sort_by = st.sidebar.selectbox("Order articles by:",
 
 # Search by topic
 topic = st.sidebar.selectbox("Search by topic:",
-                             ['', 'German', 'Cellular Expression', 'Heart and Lungs', 'Cell Studies', 
+                             ['', 'German', 'Cellular Response', 'Heart and Lungs', 'Plant Studies',
                               'At Risk Groups', 'Household Pets', 'Pre-existing Conditions', 
-                              'Global Health', 'Hospital Studies', 'Respiratory Conditions', 
-                              'Severe Outbreaks','Nervous System', 'Research Studies', 
-                              'Symptoms and Treatment', 'Intestinal Reactions', 'Coronaviruses', 'French', 
-                              'Vaccines', 'Proteins', 'Tissues and Lesions', 'Italian', 'Detection',
-                              'Spanish', 'Farm Animals', 'Host Infection'])
+                              'Global Health','Hospital Studies', 'Respiratory Conditions',
+                              'Severe Outbreaks', 'Nervous System', 'Data Science', 'Qualitative Studies',
+                              'Gastrointestinal', 'Viral Inhibition', 'French', 'Vaccines and Immunity', 
+                              'Proteins', 'Pathology', 'Italian', 'Detection', 'Spanish', 'Farm Animals', 
+                              'Evolutionary History'])
 
 # Display results as link to article and article title
 if user_input == '':
@@ -88,12 +88,12 @@ elif order == 'Most Recent' and user_input in model.wv.vocab.keys():
 
 # Display articles of a certain topic
 topic_selected = topic
-topic_list = ['German', 'Cellular Expression', 'Heart and Lungs', 'Cell Studies', 'At Risk Groups',
+topic_list = ['German', 'Cellular Response', 'Heart and Lungs', 'Plant Studies', 'At Risk Groups',
               'Household Pets', 'Pre-existing Conditions', 'Global Health', 'Hospital Studies', 
-              'Respiratory Conditions','Severe Outbreaks', 'Nervous System', 'Research Studies', 
-              'Symptoms and Treatment', 'Intestinal Reactions', 'Coronaviruses', 'French', 'Vaccines',
-              'Proteins', 'Tissues and Lesions', 'Italian', 'Detection', 'Spanish', 'Farm Animals',
-              'Host Infection']
+              'Respiratory Conditions', 'Severe Outbreaks', 'Nervous System', 'Data Science',
+              'Qualitative Studies', 'Gastrointestinal', 'Viral Inhibition', 'French', 
+              'Vaccines and Immunity', 'Proteins', 'Pathology', 'Italian', 'Detection', 'Spanish',
+              'Farm Animals', 'Evolutionary History']
 
 topic_dict = {topic: float(i) for i, topic in enumerate(topic_list)}
 
