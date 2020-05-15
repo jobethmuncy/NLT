@@ -14,3 +14,7 @@ https://www.dropbox.com/s/k0hh0jjjb7e0d2w/merged_filtered_articles.csv?dl=0
 Link to LDA model (ran on merged metadata, 5 times), optimal_mallet model, and topics csv file:
 
 https://drive.google.com/open?id=1LKKWQkD8L-kuM3pIun3o_mX7kJ2KQ9GW
+
+Link to csv file of articles with topics added and retrained doc2vec model:
+
+https://drive.google.com/open?id=1_zaCCqI1gjZMrujrXS11LqhYD7HIa1pl
